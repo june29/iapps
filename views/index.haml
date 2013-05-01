@@ -1,0 +1,46 @@
+!!!5
+%html
+  %head
+    %title iApps
+
+    %script(type="text/javascript" src="#{javascript_path('jquery-2.0.0.min')}")
+    %script(type="text/javascript" src="#{javascript_path('knockout-2.2.1')}")
+    %script(type="text/javascript" src="#{javascript_path('iapps')}")
+
+    %link(rel="stylesheet" type="text/css" href="#{stylesheet_path('iapps')}")
+  %body
+    %header
+      %h1
+        iApps
+    %form(data-bind="submit: search")
+      %input(type="text" data-bind="value: query")
+      %input(type="submit" value="Search")
+      %img(src="/loading.gif" data-bind="visible: loading")
+    #apps
+      #list(data-bind="template: { name: 'template-app', foreach: apps }")
+      #selected(data-bind="template: { name: 'template-selected', data: selected, if: selected }")
+
+    %script(type="text/html" id="template-app")
+      .app(data-bind="click: $root.select")
+        .icon
+          %img(data-bind="attr: { src: artworkUrl512 }" width="100" height="100")
+        .text
+          %h2(data-bind="text: trackName")
+          %p
+            %strong
+              Version
+            %span(data-bind="text: version")
+          %p
+            %strong
+              Price
+            %span(data-bind="text: formattedPrice")
+
+    %script(type="text/html" id="template-selected")
+      .app
+        .icon
+          %img(data-bind="attr: { src: artworkUrl512 }" width="100" height="100")
+        .text
+          %h2(data-bind="text: trackName")
+          %p
+            %a(data-bind="attr: { href: trackViewUrl }" target="_blank") View this app on iTunes
+          %pre(data-bind="text: description")
